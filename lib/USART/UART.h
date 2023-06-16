@@ -1,5 +1,7 @@
 #ifndef UART_H
 #define UART_H
+#include <stdlib.h>
+#include <stdbool.h>
 
 /**
  * @brief Esta libreria controla el periferico USART 1 en:
@@ -10,7 +12,7 @@
  */
 
 
-void UART_enable(void);
+void UART_init(void);
 
 /**
  * @brief Lee el caracter recibido
@@ -23,7 +25,7 @@ char UART_read(void);
  * 
  * @param caracter 
  */
-void UART_write(char caracter);
+bool UART_write(char caracter);
 
 
 

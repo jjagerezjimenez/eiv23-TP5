@@ -2,14 +2,14 @@
 #include "BluePillHal.h"
 
 int main (void){
-    UART_enable();
+    UART_init();
     BP_Pin_mode(C13,OUT_2MHz);
     while (1){
-        //const char a = UART_read();
-        // if (a == 'a') BP_Pin_set(C13,1);
-        // if (a == 's') BP_Pin_set(C13,0);
-
-        UART_write(UART_read());
+    UART_read();
+        for(int i=0;i<500;i++){
+            while ( ! (UART_write('X')) ); //suma int y char no es error?   
+        }
+            UART_write('\n');
     }
 
     return 0;
