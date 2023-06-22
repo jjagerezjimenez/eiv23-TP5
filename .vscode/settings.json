@@ -2,6 +2,7 @@
     "files.associations": {
         "stm32f1xx.h": "c",
         "bluepillhal.h": "c",
-        "stm32f103xb.h": "c"
+        "stm32f103xb.h": "c",
+        "comandos.h": "c"
     }
 }
