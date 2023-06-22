@@ -1,5 +1,3 @@
-**plantilla base para el timer**
-
 #include <stm32f1xx.h>
 #include "BluePillHal.h"
 
@@ -10,7 +8,8 @@
 void TIM3_IRQHandler(void);
 
 void TIM3_init(void) {
-    // Habilitar el reloj para TIM3
+    // Habilitar el reloj para TIM3 
+    //Veificar que timer usar*********
     RCC->APB1ENR |= RCC_APB1ENR_TIM3EN;
 
     // Configurar el Timer en modo PWM
@@ -18,10 +17,11 @@ void TIM3_init(void) {
     TIM3->CR2 = 0;  // Limpiar el registro de control 2
     TIM3->CCMR1 = TIM_CCMR1_OC1M_1 | TIM_CCMR1_OC1M_2;  // Modo PWM1 en canal 1
     TIM3->CCER = TIM_CCER_CC1E;  // Habilitar la salida del canal 1
+    SystemCoreClockUpdate();
     TIM3->PSC = (SystemCoreClock / 1000000) - 1;  // Configurar el preescaler para una frecuencia de 1MHz
     TIM3->ARR = PERIODO_PWM - 1;  // Configurar el período del PWM
 
-    // Configurar el pin de salida del PWM (PA6)
+    // Configurar el pin de salida del PWM (PA6) //NO funciona asi 
     BP_Pin_mode(A6, AO_PP);
 
     // Habilitar la interrupción del timer
