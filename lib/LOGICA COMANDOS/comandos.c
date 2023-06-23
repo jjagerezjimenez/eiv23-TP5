@@ -1,77 +1,152 @@
 #include "comandos.h"
+#include <ctype.h>
 
-char const tabla_cmd[N_COMANDOS][CMD_SIZE] = {
-    {'A','N','G',' ',' '},  //ANG
-    {'A','N','G','?',' '},  //ANG?
-    {'I','D','?',' ',' '},   //ID?
-    {'N','O','N','E',' '}, 
+//char const tabla_cmd[N_COMANDOS][CMD_SIZE] = {
+//    {'A','N','G',' ',' '},  //ANG
+//    {'A','N','G','?',' '},  //ANG?
+//    {'I','D','?',' ',' '},   //ID?
+//    {'N','O','N','E',' '}, 
+//};
+
+
+static char const * const tabla_cmd[N_COMANDOS] = {
+    "ang",
+    "ang?",
+    "id?"
 };
 
-void getCommand(CMD * cmd){
-    int min =0, max = N_COMANDOS , n=0;
-    char c;
-    bool par_valido = 1;
-    Numero param = {0};
-    UART_read(&c);
-    while (c!= '\r' && c!= ' '){
+typedef enum Estado {
+    INICIO,
+    buscaCMD,
+    buscaNUM
+}Estado;
 
-        
-        for (int i = min; i<=max; i++){ //  Busco la primera coincidencia
-            if (c== tabla_cmd[i][n]){
-                min = i;
-                break;
-            }
-        }
-        for (int i = min; i<=max; i++){// Busco la primera diferencia
-            if (c != tabla_cmd[i][n]) {
-                max = i - 1;
-                break;
-            }
-        }
-        n++;
-        if (max < min) {
-            UART_write ('F');
+typedef struct  Palabra
+{
+   int min;
+   int max;
+   int n;
+}Palabra;
+
+
+
+void agregarLetra(Palabra * palabra, char c){   
+    if (palabra->max < palabra->min) {
+        return; //Guarda por si hubo una diferencia
+    }
+    if (isalpha(c)){
+        c = tolower(c);
+    }
+    for (int i = palabra->min; i<= palabra->max; i++){ //  Busco la primera coincidencia
+    volatile char tabla =  tabla_cmd[i][palabra->n];
+        if (c == tabla){
+            palabra->min = i;
             break;
         }
-        UART_read(&c); //como volver si no habia caracter?
     }
-    if ((tabla_cmd[min][n] == ' ')){ //???
-        max=min;          
-    }
-    if (max == min){
-        cmd->cmd = max;
-    }else{
-        cmd->cmd = DESCO; 
-    }
-    if (c=='\n'){
-        return;
-    }
-    getNumero(&param);
-    do{
-        UART_read(&c);
-        if (!agregarDig(&param,c)) {
-            par_valido=0;
+
+    for (int i = palabra->min; i<=  palabra->max; i++){// Busco la primera diferencia
+    volatile char tabla =  tabla_cmd[i][palabra->n];
+
+        if (c != tabla) {
+            palabra->max = i - 1;
             break;
         }
-    }while(c != '\n');
-    if(par_valido) {
-        cmd->var[0] = getNumero(&param);
+    }
+
+    palabra->n++;
+    
+}
+
+void palabraCLR(Palabra * palabra){
+    palabra->max = N_COMANDOS - 1;
+    palabra->min = 0;
+
+    palabra->n = 0;
+}
+Command getCMD(Palabra * palabra){
+    if ((palabra->max == palabra->min ) && (tabla_cmd[palabra->max][palabra->n + 1] == 0 )){
+//Y si era el ùnico pero no se termino de escribir?
+        return palabra->max;
     }else{
-        cmd->var[0] = 0;
+        return DESCO;
     }
 }
 
 
 
-/*
-static int agregarDig(uint8_t * digitos){
-    static uint8_t cantidad = 0;
+
+
+
+bool esTerminador(char c){
+    return (c == ' ' || c == '\r' || c == '\n');
 }
 
-void getParameter(Buffer * buffer, CMD * cmd){
-    do{
-        agregarDig(parametro);
-    }while (Esunnumero(c))
-    return getInt(parametro);
+bool getCommand(CMD * cmd, char c){
+    static Estado estado = INICIO;
+    static Palabra  palabra = {.max = N_COMANDOS - 1 , .min = 0, .n = 0 };
+    static Numero numero;
+
+
+    if (esTerminador(c)){
+        estado = INICIO;
+        if(getCMD(&palabra) != DESCO) {
+            cmd->cmd = getCMD(&palabra);
+            cmd->var = getNumero(&numero);
+            palabraCLR(&palabra);
+            return 1;
+        }else{
+            palabraCLR(&palabra);
+            getNumero(&numero);
+        }
+
+    }else{
+        switch (estado) {
+            case INICIO:
+                UART_write('I');
+                palabraCLR(&palabra);
+                getNumero(&numero);
+                if (isalpha(c)){
+                    estado = buscaCMD;
+                    agregarLetra(&palabra,c);
+                }
+
+            break;case buscaCMD:
+                UART_write('K');
+                if ( (isalnum (c)) || (c == ' ') || (c == '?' )) 
+                
+                {
+                    agregarLetra(&palabra,c); 
+                    estado = buscaCMD;
+                    if (c == ' '){
+                        if ( getCMD(&palabra) != DESCO){
+                            estado = buscaNUM;
+                        }else{
+                            estado = INICIO;
+                        }
+                    }         
+                }else{
+                    estado = INICIO;
+                }
+
+            break;case buscaNUM:
+                if (isdigit(c)) {
+                    agregarDig(&numero,c);
+                }else{
+                    estado = INICIO;
+                }
+            break;
+        }
+    }
+    return 0;
 }
-*/
+
+
+
+
+
+
+
+
+
+

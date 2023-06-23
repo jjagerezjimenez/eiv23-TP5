@@ -5,7 +5,7 @@
 #include "buffer.h"
 #include "numeros.h"
 #include "UART.h"
-#define N_COMANDOS 4
+#define N_COMANDOS 3
 #define CMD_SIZE 5
 #define MAX_N_PARAMETROS 1
 
@@ -20,10 +20,10 @@ typedef enum Command{
 
 typedef struct CMD{
     Command cmd;
-    uint8_t var[MAX_N_PARAMETROS];
+    uint8_t var;
 }CMD;
 
-void getCommand(CMD * cmd);
+bool getCommand(CMD * cmd, char c);
 
 
 
