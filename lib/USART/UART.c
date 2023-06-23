@@ -21,7 +21,8 @@ Buffer buffer_rx = {
 };
 
 CMD cmd;
-
+int X;
+char numerox[4];
 
 
 void USART1_IRQHandler(void){
@@ -36,19 +37,27 @@ void USART1_IRQHandler(void){
         }
     }
     if (USART1->SR & USART_SR_RXNE){// Interrupcion por registro RX con caràcter
-
+//si se llena el Buffer se clava
         const char caracter = USART1->DR;
-        buffer_escribir(&buffer_rx, caracter); 
+        if (!buffer_escribir(&buffer_rx, caracter)){
+            UART_write('\n');
+            for (int i=0;i<10;i++) UART_write ('X');
+            UART_write('\n');
+            buffer_clr(&buffer_rx);
+        } 
         UART_write(caracter);
         if ('\n' == caracter) {
             getCommand(&cmd);
             buffer_clr(&buffer_rx); 
             //UART_write ('r');
-        if (cmd.cmd == ANG)  UART_write ('D');
-        if (cmd.cmd == ANGq) UART_write ('P');
-        if (cmd.cmd == IDq)  UART_write ('Y');
-        if (cmd.cmd == DESCO) UART_write ('O');
-        if (cmd.cmd == NONE)  UART_write ('A');
+        if (cmd.cmd == ANG)  X = cmd.var[0];
+        if (cmd.cmd == ANGq) {
+            int k = toChar(X,numerox,4);
+            for (int i=0;i<4;i++) UART_write(numerox[k - i]);
+        }
+        if (cmd.cmd == IDq)     UART_write ('Y');
+        if (cmd.cmd == DESCO)   UART_write ('O');
+        if (cmd.cmd == NONE)    UART_write ('A');
         }
     }
 }

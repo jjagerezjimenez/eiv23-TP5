@@ -3,10 +3,11 @@
 #define COMANDOS_H
 #include <stdint.h>
 #include "buffer.h"
+#include "numeros.h"
 #include "UART.h"
 #define N_COMANDOS 4
 #define CMD_SIZE 5
-#define MAX_N_PARAMETROS 4
+#define MAX_N_PARAMETROS 1
 
 
 typedef enum Command{

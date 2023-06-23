@@ -41,37 +41,3 @@ void buffer_clr(Buffer * self){
 }
 
 
-
-
-typedef struct Numero {
-    uint8_t digitos[10];
-    uint8_t index;
-}Numero;
-
-
-
-static bool charToInt(char c,int * num){
-    if (c <= '9' && c>= '0') {
-        *num = (int)c - 48;
-    }else{
-        return 0;
-    }
-}
-
-static bool agregarDig(Numero * numero,char c){
-    int num;
-    if (numero->index + 1 == 10  || !charToInt(c,&num)){
-        return 0;}
-    numero->digitos[numero->index] = num;
-    numero->index++;
-    return 1;
-}
-
-static int getNumero(Numero * numero){
-    int resultado =0, potencia = 1;
-    for (int i = 0; i<= numero->index; i++){
-    resultado = numero->digitos [i] * potencia;
-    potencia = potencia * 10;
-    }
-}
-
