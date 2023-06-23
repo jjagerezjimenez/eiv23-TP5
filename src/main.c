@@ -7,7 +7,7 @@ int main (void){
     while (1){
     UART_read();
         for(int i=0;i<500;i++){
-            while ( ! (UART_write('X')) ); //suma int y char no es error?   
+            while ( ! (UART_write('X')) );  
         }
             UART_write('\n');
     }

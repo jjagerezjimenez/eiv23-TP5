@@ -4,35 +4,30 @@
 #include "BluePillHal.h"
 
 #define BAUDRATE 9600
-#define BUFFER_MAX 64
-
+#define BUFFER_MAX 64 //Y con 4?
+//contar las veces que se lleno el Buffer
+//veces que se vació?
 typedef struct Buffer{
-    char * chars;
+    char  chars[BUFFER_MAX];
     uint8_t i_save;
     uint8_t i_use;
-    uint8_t size;
 }Buffer;
 
 Buffer buffer_tx = {
     .i_save = 0,
     .i_use = 0,
-    .size = 64
 };
 
-void bufferInit(Buffer * self){
-    self-> chars = calloc(self -> size , sizeof( char ));
-}
-
-
 bool BufferLleno(Buffer * self){
-    return (self->i_save + 1) == self->i_use;
+    //return (self->i_save + 1) == self->i_use;
+    return siguienteModular(self->i_save,BUFFER_MAX) == self->i_use;
 }
 
 bool BufferVacio(Buffer * self){
     return self->i_use == self->i_save;
 }
 
-static uint8_t siguienteModular(uint8_t valor,uint8_t modulo){
+static uint8_t siguienteModular(uint8_t valor,uint8_t modulo){//quepasa si llega aca la int??0.
     if (!modulo) return 0;
     if (valor >= (modulo - 1)) {
         valor = 0;
@@ -43,10 +38,10 @@ static uint8_t siguienteModular(uint8_t valor,uint8_t modulo){
 }
 
 bool buffer_escribir(Buffer * self, char caracter){
-    if (BufferLleno (self)) return 0;
+    if (BufferLleno (self)) return 0;//que pasa si llega aca la interrupcion?
     self->chars[self->i_save] = caracter;
     // Asignar nuevo valor
-    self->i_save = siguienteModular(self->i_save,self->size);
+    self->i_save = siguienteModular(self->i_save,BUFFER_MAX);
     return true;
 }
 
@@ -55,7 +50,7 @@ bool buffer_leer(Buffer * self, char * caracter_p){
     if (BufferVacio(self)) return 0;
 
     *caracter_p = self->chars[self->i_use];
-    self->i_use = siguienteModular(self->i_use,self->size);
+    self->i_use = siguienteModular(self->i_use,BUFFER_MAX);
     return 1;
 }
 
@@ -84,7 +79,6 @@ void UART_init(void){
     USART1->BRR = SystemCoreClock / (BAUDRATE);  
     __NVIC_EnableIRQ(USART1_IRQn);
     USART1->CR1 = USART_CR1_UE | USART_CR1_TE | USART_CR1_RE;
-    bufferInit(&buffer_tx);
     
 }
 char UART_read(void){
@@ -94,7 +88,7 @@ char UART_read(void){
 }
 bool UART_write(char caracter){
     bool PudoEscribir = buffer_escribir(&buffer_tx,caracter);
-    if (PudoEscribir) {USART1->CR1 |= USART_CR1_TXEIE;}
+    if (PudoEscribir) {USART1->CR1 |= USART_CR1_TXEIE;} //activa interrupciones si pudo escribir
     return PudoEscribir;
 }
 

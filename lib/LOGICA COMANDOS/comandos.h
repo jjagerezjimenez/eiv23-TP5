@@ -27,20 +27,40 @@ typedef struct CMD{
 
 
 void getCommand(Buffer * buffer, CMD * cmd){
-    
-    int min =0, max = MAX_N_PARAMETROS;
+int min =0, max = MAX_N_PARAMETROS, n=0;
+do{
     char const c = getchar(buffer);
     for (int i = min; i<max; i++){
         if (c== tabla_cmd[i][n]){
             min = i;
             break;}
     }
-    for (int i = min; i<max; i++){
+    for (int i = min; i<=max; i++){
     if (c != tabla_cmd[i][n]) {
-        max = i;
+        max = i - 1;
         break;}
     }
+    n++;
+    if (max < min) break;
+}while (c != ' ')
+if (max == min) cmd->cmd = max;
+else cmd->cmd = ERROR; 
 }
+
+static int agregarDig(uint8_t * digitos){
+    static uint8_t cantidad = 0;
+}
+
+void getParameter(Buffer * buffer, CMD * cmd){
+    do{
+        agregarDig(parametro);
+    }while (Esunnumero(c))
+    return getInt(parametro);
+}
+
+
+
+//Hacer una tabla con los valores por letra de antemano?
 
 
 
