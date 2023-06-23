@@ -43,7 +43,7 @@ void set_servo_angle(uint8_t angle) {
 }
 
 void TIM3_IRQHandler(void) {
-    // Limpiar la bandera de interrupción
+    // Limpiar la bandera de interrupción ??
     TIM3->SR &= ~TIM_SR_UIF;
 }
 

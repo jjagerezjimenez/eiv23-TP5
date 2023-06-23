@@ -19,7 +19,7 @@ void UART_init(void);
  * 
  * @return char 
  */
-char UART_read(void);
+bool UART_read(char * c);
 /**
  * @brief Envía un caracter por el puerto
  * 

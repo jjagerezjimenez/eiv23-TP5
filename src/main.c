@@ -4,13 +4,7 @@
 int main (void){
     UART_init();
     BP_Pin_mode(C13,OUT_2MHz);
-    while (1){
-    UART_read();
-        for(int i=0;i<500;i++){
-            while ( ! (UART_write('X')) );  
-        }
-            UART_write('\n');
-    }
+    for(;;);
 
     return 0;
 }
