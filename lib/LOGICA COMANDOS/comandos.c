@@ -67,6 +67,8 @@ void palabraCLR(Palabra * palabra){
 Command getCMD(Palabra * palabra){
     if ((palabra->max == palabra->min ) && (tabla_cmd[palabra->max][palabra->n + 1] == 0 )){
 //Y si era el ùnico pero no se termino de escribir?
+        UART_write(tabla_cmd[palabra->max][palabra->n + 1]);
+        UART_write(palabra->n + 48);
         return palabra->max;
     }else{
         return DESCO;
