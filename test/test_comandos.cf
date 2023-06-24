@@ -5,9 +5,10 @@
 CMD cmd;
 
 void setUp(void){
+    TEST_ASSERT_FALSE(getCommand(&cmd,'\n')); 
 }
 void tearDown(void){
-
+    TEST_ASSERT_FALSE(getCommand(&cmd,'\n')); 
 }
 void test_Comando_invalido (void){
     TEST_ASSERT_FALSE(getCommand(&cmd,'a'));
@@ -33,6 +34,7 @@ void test_ID_incompleto (void){
     TEST_ASSERT_FALSE(getCommand(&cmd,'a'));
     TEST_ASSERT_FALSE(getCommand(&cmd,'b'));
     TEST_ASSERT_FALSE(getCommand(&cmd,'\n')); 
+    TEST_ASSERT_EQUAL(DESCO, cmd.cmd);
     TEST_ASSERT_FALSE(getCommand(&cmd,'i'));
     TEST_ASSERT_FALSE(getCommand(&cmd,'d'));
     TEST_ASSERT_FALSE(getCommand(&cmd,'\n'));
@@ -59,4 +61,16 @@ void test_ANG(void){
     TEST_ASSERT_TRUE(getCommand(&cmd,'\n'));
     TEST_ASSERT_EQUAL(ANG,cmd.cmd);
     TEST_ASSERT_EQUAL(cmd.var, 0);
+}
+void test_ANG_c_numero (void){
+    TEST_ASSERT_FALSE(getCommand(&cmd,'a'));
+    TEST_ASSERT_FALSE(getCommand(&cmd,'n'));
+    TEST_ASSERT_FALSE(getCommand(&cmd,'g'));
+    TEST_ASSERT_TRUE(getCommand(&cmd,' '));
+    TEST_ASSERT_FALSE(getCommand(&cmd,'1'));
+    TEST_ASSERT_FALSE(getCommand(&cmd,'2'));
+    TEST_ASSERT_FALSE(getCommand(&cmd,'2'));
+    TEST_ASSERT_TRUE(getCommand(&cmd,'\n'));
+    TEST_ASSERT_EQUAL(ANG,cmd.cmd);
+    TEST_ASSERT_EQUAL(cmd.var, 122);
 }

@@ -15,6 +15,7 @@ extern void test_IDq (void);
 extern void test_ID_incompleto (void);
 extern void test_ANG_q (void);
 extern void test_ANG(void);
+extern void test_ANG_c_numero (void);
 
 
 /*=======Mock Management=====*/
@@ -79,11 +80,12 @@ static void run_test(UnityTestFunction func, const char* name, UNITY_LINE_TYPE l
 int main(void)
 {
   UnityBegin("test_comandos.c");
-  run_test(test_Comando_invalido , "test_Comando_invalido ", 12);
-  run_test(test_IDq , "test_IDq ", 21);
-  run_test(test_ID_incompleto , "test_ID_incompleto ", 32);
-  run_test(test_ANG_q , "test_ANG_q ", 43);
-  run_test(test_ANG, "test_ANG", 43);
+  run_test(test_Comando_invalido , "test_Comando_invalido ", 13);
+  run_test(test_IDq , "test_IDq ", 22);
+  run_test(test_ID_incompleto , "test_ID_incompleto ", 33);
+  run_test(test_ANG_q , "test_ANG_q ", 45);
+  run_test(test_ANG, "test_ANG", 45);
+  run_test(test_ANG_c_numero , "test_ANG_c_numero ", 65);
 
   return UnityEnd();
 }

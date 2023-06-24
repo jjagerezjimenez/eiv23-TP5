@@ -57,7 +57,7 @@ void palabraCLR(Palabra * palabra){
     palabra->n = 0;
 }
 Command getCMD(Palabra * palabra){
-    Command const comando = ((palabra->max >= palabra->min) && (tabla_cmd[palabra->min][palabra->n] == 0 )) ? palabra->min : DESCO;
+    Command const comando = ((palabra->max >= palabra->min) && (tabla_cmd[palabra->min][palabra->n] == '\0' )) ? palabra->min : DESCO;
     return comando;
 }
 
@@ -82,6 +82,7 @@ bool getCommand(CMD * cmd, char c){
             palabraCLR(&palabra);
             return 1;
         }else{
+            cmd->cmd = DESCO;
             palabraCLR(&palabra);
             getNumero(&numero);
         }
@@ -97,7 +98,7 @@ bool getCommand(CMD * cmd, char c){
         break;case buscaCMD:
             if (c == ' '){
                 estado = getCMD(&palabra) != DESCO ? buscaNUM : INICIO;
-            }else if(isalnum(c)|| c== '?') {
+            }else if(isalnum(c) || c== '?') {
                 agregarLetra(&palabra,c);          
             }else{
             estado = INICIO;

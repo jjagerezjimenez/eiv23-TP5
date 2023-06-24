@@ -4,31 +4,35 @@
   :file: test_comandos.c
 :successes:
 - :test: 'test_Comando_invalido '
-  :line: 12
+  :line: 13
   :message: ''
   :unity_test_time: 0
 - :test: 'test_IDq '
-  :line: 21
+  :line: 22
+  :message: ''
+  :unity_test_time: 0
+- :test: 'test_ID_incompleto '
+  :line: 33
   :message: ''
   :unity_test_time: 0
 - :test: 'test_ANG_q '
-  :line: 43
+  :line: 45
   :message: ''
   :unity_test_time: 0
 - :test: test_ANG
-  :line: 43
+  :line: 45
   :message: ''
   :unity_test_time: 0
 :failures:
-- :test: 'test_ID_incompleto '
-  :line: 39
-  :message: Expected 255 Was 2
+- :test: 'test_ANG_c_numero '
+  :line: 73
+  :message: Expected TRUE Was FALSE
   :unity_test_time: 0
 :ignores: []
 :counts:
-  :total: 5
-  :passed: 4
+  :total: 6
+  :passed: 5
   :failed: 1
   :ignored: 0
 :stdout: []
-:time: 1.8016691000084393
+:time: 0.05699579999782145
