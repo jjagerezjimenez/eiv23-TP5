@@ -3,15 +3,13 @@
 #include <stdint.h>
 
 /**
- * @brief 
- * 
+ * @brief Inicializa el Timer 3 para la generación de PWM.
  */
 void    TIM3_init(void);
 
 /**
- * @brief Set the servo angle object
- * 
- * @param angle 
+ * @brief Establece el ángulo del servo motor.
+ * @param angle El ángulo deseado para el servo motor (0-180).
  */
-void set_servo_angle(uint8_t angle); //uint8??
+void set_servo_angle(uint32_t angle); //uint8??
 #endif
