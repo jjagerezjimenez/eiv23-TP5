@@ -5,6 +5,9 @@
         "stm32f103xb.h": "c",
         "comandos.h": "c",
         "uart.h": "c",
-        "numeros.h": "c"
+        "numeros.h": "c",
+        "unity.h": "c",
+        "stdbool.h": "c",
+        "ctype.h": "c"
     }
 }
