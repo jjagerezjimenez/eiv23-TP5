@@ -4,6 +4,7 @@
 #include "BluePillHal.h"
 #include "buffer.h"
 #include "comandos.h"
+#include "numeros.h"
 
 #define BAUDRATE 9600
  //Y con 4?
@@ -24,40 +25,34 @@ CMD cmd;
 int X;
 char numerox[4];
 
+void UART_write_string(char * string){
+    int i = 0;
+    while (string[i]!='\0'){
+        UART_write(string[i]);
+        i++;
+    }
+}
+void UART_write_numero(int numero){
+    char numero_string[10];
+    toString(numero,numero_string,10);
+    UART_write_string(numero_string);
+}
 
 void USART1_IRQHandler(void){
-
-    if (USART1->SR & USART_SR_TXE) { // Interrupción por registro TX vacío
-        char   leido;
-        const bool HabiaParaLeer = buffer_leer(&buffer_tx, &leido);
-        if (HabiaParaLeer){
-            USART1->DR = leido;
-        }else{
-           USART1->CR1 &= ~USART_CR1_TXEIE;
-        }
+if (USART1->SR & USART_SR_TXE) { // Interrupción por registro TX vacío
+    char   leido;
+    const bool HabiaParaLeer = buffer_leer(&buffer_tx, &leido);
+    if (HabiaParaLeer){
+        USART1->DR = leido;
+    }else{
+        USART1->CR1 &= ~USART_CR1_TXEIE;
     }
-    if (USART1->SR & USART_SR_RXNE){// Interrupcion por registro RX con caràcter
-        const char c = USART1->DR;
-        UART_write(c);
-        bool IdentificoUnComando = getCommand(&cmd,c);
-        if (IdentificoUnComando){
-            UART_write('\n');
-            switch (cmd.cmd)
-            {
-                case ANG:
-                    UART_write('A');
-                break;case ANGq:
-                    UART_write('B');
-                break;case IDq:
-                    UART_write('C');
-                break;case DESCO:
-                    UART_write('X');
-                break;default:
-                break;
-            }
-        }
-    }
-    
+}
+if (USART1->SR & USART_SR_RXNE){// Interrupcion por registro RX con caràcter
+    const char c = USART1->DR;
+    UART_write(c);
+    getCommand(&cmd,c);
+}    
 }
 
 void UART_init(void){

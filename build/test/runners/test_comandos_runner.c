@@ -12,10 +12,20 @@ extern void setUp(void);
 extern void tearDown(void);
 extern void test_Comando_invalido (void);
 extern void test_IDq (void);
+extern void test_comadoreste (void);
+extern void test_apagar (void);
+extern void test_apagar_cortado (void);
+extern void test_IDq_c_espacio_al_final (void);
+extern void test_IDq_c_espacios_al_final (void);
 extern void test_ID_incompleto (void);
 extern void test_ANG_q (void);
-extern void test_ANG(void);
+extern void test_ANG_q_c_espacio (void);
+extern void test_ANG_q_c_numero (void);
+extern void test_ANG_sin_parametro(void);
+extern void test_ANG_Space(void);
 extern void test_ANG_c_numero (void);
+extern void test_ANG_c_numero_c_2_espacios (void);
+extern void test_ANG_c_numero_c_espacios_al_final (void);
 
 
 /*=======Mock Management=====*/
@@ -81,11 +91,21 @@ int main(void)
 {
   UnityBegin("test_comandos.c");
   run_test(test_Comando_invalido , "test_Comando_invalido ", 13);
-  run_test(test_IDq , "test_IDq ", 22);
-  run_test(test_ID_incompleto , "test_ID_incompleto ", 33);
-  run_test(test_ANG_q , "test_ANG_q ", 45);
-  run_test(test_ANG, "test_ANG", 45);
-  run_test(test_ANG_c_numero , "test_ANG_c_numero ", 65);
+  run_test(test_IDq , "test_IDq ", 27);
+  run_test(test_comadoreste , "test_comadoreste ", 39);
+  run_test(test_apagar , "test_apagar ", 50);
+  run_test(test_apagar_cortado , "test_apagar_cortado ", 61);
+  run_test(test_IDq_c_espacio_al_final , "test_IDq_c_espacio_al_final ", 74);
+  run_test(test_IDq_c_espacios_al_final , "test_IDq_c_espacios_al_final ", 86);
+  run_test(test_ID_incompleto , "test_ID_incompleto ", 100);
+  run_test(test_ANG_q , "test_ANG_q ", 112);
+  run_test(test_ANG_q_c_espacio , "test_ANG_q_c_espacio ", 123);
+  run_test(test_ANG_q_c_numero , "test_ANG_q_c_numero ", 135);
+  run_test(test_ANG_sin_parametro, "test_ANG_sin_parametro", 148);
+  run_test(test_ANG_Space, "test_ANG_Space", 156);
+  run_test(test_ANG_c_numero , "test_ANG_c_numero ", 164);
+  run_test(test_ANG_c_numero_c_2_espacios , "test_ANG_c_numero_c_2_espacios ", 176);
+  run_test(test_ANG_c_numero_c_espacios_al_final , "test_ANG_c_numero_c_espacios_al_final ", 188);
 
   return UnityEnd();
 }

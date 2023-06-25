@@ -27,6 +27,9 @@ bool UART_read(char * c);
  */
 bool UART_write(char caracter);
 
+void UART_write_string(char * string);
+void UART_write_numero(int numero);
+
 
 
 

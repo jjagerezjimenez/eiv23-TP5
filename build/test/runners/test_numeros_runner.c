@@ -10,6 +10,15 @@ char* GlobalOrderError;
 /*=======External Functions This Runner Calls=====*/
 extern void setUp(void);
 extern void tearDown(void);
+extern void test_numero_solo_recibe_numeros (void);
+extern void test_numero_1 (void);
+extern void test_numero_12 (void);
+extern void test_numero_22 (void);
+extern void test_numero_0 (void);
+extern void test_numero_235453 (void);
+extern void test_toString_123123 (void);
+extern void test_toString_1231234 (void);
+extern void test_toString_0 (void);
 
 
 /*=======Mock Management=====*/
@@ -42,10 +51,47 @@ void verifyTest(void)
   CMock_Verify();
 }
 
+/*=======Test Runner Used To Run Each Test=====*/
+static void run_test(UnityTestFunction func, const char* name, UNITY_LINE_TYPE line_num)
+{
+    Unity.CurrentTestName = name;
+    Unity.CurrentTestLineNumber = line_num;
+#ifdef UNITY_USE_COMMAND_LINE_ARGS
+    if (!UnityTestMatches())
+        return;
+#endif
+    Unity.NumberOfTests++;
+    UNITY_CLR_DETAILS();
+    UNITY_EXEC_TIME_START();
+    CMock_Init();
+    if (TEST_PROTECT())
+    {
+        setUp();
+        func();
+    }
+    if (TEST_PROTECT())
+    {
+        tearDown();
+        CMock_Verify();
+    }
+    CMock_Destroy();
+    UNITY_EXEC_TIME_STOP();
+    UnityConcludeTest();
+}
+
 /*=======MAIN=====*/
 int main(void)
 {
   UnityBegin("test_numeros.c");
+  run_test(test_numero_solo_recibe_numeros , "test_numero_solo_recibe_numeros ", 13);
+  run_test(test_numero_1 , "test_numero_1 ", 24);
+  run_test(test_numero_12 , "test_numero_12 ", 29);
+  run_test(test_numero_22 , "test_numero_22 ", 34);
+  run_test(test_numero_0 , "test_numero_0 ", 40);
+  run_test(test_numero_235453 , "test_numero_235453 ", 45);
+  run_test(test_toString_123123 , "test_toString_123123 ", 54);
+  run_test(test_toString_1231234 , "test_toString_1231234 ", 59);
+  run_test(test_toString_0 , "test_toString_0 ", 64);
 
   return UnityEnd();
 }

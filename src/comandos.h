@@ -1,8 +1,7 @@
 
 #ifndef COMANDOS_H
 #define COMANDOS_H
-#define N_COMANDOS 3
-#define CMD_SIZE 5
+#define N_COMANDOS 5
 #define MAX_N_PARAMETROS 1
 #include <stdbool.h>
 
@@ -10,25 +9,30 @@
 typedef enum Command{
     ANG,
     ANGq, //ANG?
+    APAGAR, 
     IDq, //ID?
-    NONE, 
+    RESET,
     DESCO=255
 }Command;
 
+typedef enum Codigo{
+    OK,
+    none,
+    SyntaxError,
+    FaltanParametros,
+    SobranParametros
+}Codigo;
+
 typedef struct CMD{
     Command cmd;
-    int var;
+    int parametro[9];
+    Codigo code;
 }CMD;
 
-/// @brief 
-/// @param cmd 
-/// @param c 
-/// @return 
+
 bool getCommand(CMD * cmd, char c);
 
 
-
-//Hacer una tabla con los valores por letra de antemano?
 
 
 
