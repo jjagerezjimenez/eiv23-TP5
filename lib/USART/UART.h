@@ -1,5 +1,6 @@
 #ifndef UART_H
 #define UART_H
+
 #include <stdlib.h>
 #include <stdbool.h>
 
@@ -29,21 +30,5 @@ bool UART_write(char caracter);
 
 void UART_write_string(char * string);
 void UART_write_numero(int numero);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #endif

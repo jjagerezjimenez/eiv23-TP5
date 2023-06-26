@@ -40,7 +40,7 @@ uint8_t toString(int numero, char * char_n,uint8_t size ){
         char_n[1] = '\0';
         return 0;
     }
-    for(uint8_t i = 0 ; i<=10 ; i++){
+    for(uint8_t i = 0 ; i<=size ; i++){
         if (numero == 0) {
             max = i - 1;
             break;

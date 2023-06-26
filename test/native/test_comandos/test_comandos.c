@@ -1,4 +1,4 @@
-#include <unity.h>
+#include "test_comandos.h"
 #include "comandos.h"
 #include "numeros.h"
 
@@ -43,7 +43,7 @@ void test_comadoreste (void){
     TEST_ASSERT_FALSE(getCommand(&cmd,'e'));
     TEST_ASSERT_FALSE(getCommand(&cmd,'t'));
     TEST_ASSERT_TRUE(getCommand(&cmd,'\n'));
-    TEST_ASSERT_EQUAL(RESET , cmd.cmd);
+    TEST_ASSERT_EQUAL(RESET_CMD , cmd.cmd);
     TEST_ASSERT_EQUAL(cmd.parametro[0], 0);
 }
 
@@ -200,4 +200,6 @@ void test_ANG_c_numero_c_2_espacios (void){
     //TEST_ASSERT_TRUE(getCommand(&cmd,'\n'));
     TEST_ASSERT_EQUAL(152,cmd.parametro[0]);
     TEST_ASSERT_EQUAL(ANG,cmd.cmd);
+    TEST_ASSERT_EQUAL(OK,cmd.code);
 }
+

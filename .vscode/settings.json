@@ -9,6 +9,7 @@
         "unity.h": "c",
         "stdbool.h": "c",
         "ctype.h": "c",
-        "buffer.h": "c"
+        "buffer.h": "c",
+        "test_comandos.h": "c"
     }
 }

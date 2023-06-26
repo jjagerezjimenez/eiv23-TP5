@@ -11,7 +11,7 @@ typedef enum Command{
     ANGq, //ANG?
     APAGAR, 
     IDq, //ID?
-    RESET,
+    RESET_CMD,
     DESCO=255
 }Command;
 

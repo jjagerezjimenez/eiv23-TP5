@@ -1,5 +1,6 @@
 #include <stm32f1xx.h>
 #include "BluePillHal.h"
+#include <string.h>
 
 #define PERIODO_PWM 20000  // Período del PWM en microsegundos
 #define ANCHO_PULSO_MIN 1000  // Ancho de pulso mínimo en microsegundos
@@ -37,8 +38,8 @@ void TIM3_init(void) {
     TIM3->DIER |= TIM_DIER_UIE;
 
     // Configurar el NVIC para la interrupción del TIM3
-    NVIC_SetPriority(TIM3_IRQn, 0);  // Establecer la prioridad de la interrupción
-    NVIC_EnableIRQ(TIM3_IRQn);
+    //NVIC_SetPriority(TIM3_IRQn, 0);  // Establecer la prioridad de la interrupción
+    //NVIC_EnableIRQ(TIM3_IRQn);
 
     // Iniciar el Timer
     TIM3->CR1 |= TIM_CR1_CEN;
@@ -71,6 +72,10 @@ void TIM3_IRQHandler(void) {            // Limpiar la bandera de interrupción??
 }
 */
 
+int get_servo_angle(void){
+  return TIM3->CCR1 * 180;
+}
+/*
 int main(void) {
     // Inicializar el Timer 3
     TIM3_init();
@@ -83,10 +88,10 @@ int main(void) {
             comando_listo = 0;                 // reinicia el flag de comando listo para recibir nuevos comandos
         }
     }
-}
+}*/
 
 // ver esto, es una implementación de la función de recepción de comandos
-void recibir_comando(char* comando) {
+/*void recibir_comando(char* comando) {
 
     if (strncmp(comando, "ang ", 4) == 0 && strlen(comando) <= MAX_LONG_COMANDO) {          // verifica si el comando es válido y tiene el formato adecuado
 
@@ -95,7 +100,7 @@ void recibir_comando(char* comando) {
 
         comando_listo = 1;              //indicador de comando listo
     }
-}
+}*/
 
 
 

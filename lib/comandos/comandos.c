@@ -3,7 +3,11 @@
 #include <stdint.h>
 #include "buffer.h"
 #include "numeros.h"
+#include "TIMER.h"
+
+#ifndef PIO_UNIT_TESTING
 #include "UART.h"
+#endif
 
 static char const * const tabla_cmd[N_COMANDOS] = {
     "ang\n1",
@@ -77,34 +81,35 @@ static uint8_t cmd_c_parametro(Palabra * palabra){
     return cantidadParametros;
 }
 static bool esTerminador(char c){
-    return (c == '\r' || c == '\n');
+    return (c == '\n' ); //|| c == '\n'
 }
 
 static void procesar_cmd(CMD * cmd){  
+#ifndef PIO_UNIT_TESTING
     switch (cmd->cmd)
     {        case ANG:
-            (cmd->parametro <= 180 && cmd_c_parametro > 0 ) ? 
-                {
+            if(cmd->parametro[0] <=180  ){ //&& (cmd->code = OK)
                     set_servo_angle(cmd->parametro[0]);
                     UART_write_string("Angulo fijado en: ");
-                    UART_write_numero(cmd->parametro);
+                    UART_write_numero(cmd->parametro[0]);
+                    UART_write('\r'); 
                     UART_write('\n'); 
-                }
-            :   UART_write_string("Angulo Invalido, ingrege un valor entre 0-180\n");                      
+                }else{
+                UART_write_string("Angulo Invalido, ingrege un valor entre 0-180\t\n"); 
+                }                     
         break;case ANGq:
             UART_write_string("Angulo fijado en: ");
             UART_write_numero(get_servo_angle()); 
+            UART_write('\r');           
             UART_write('\n');           
         break;case IDq:
-            UART_write_string("Controlador Servomotor v0.1\n");
-        break;case DESCO:
-            UART_write_string("Syntax ERROR!\n");
+            UART_write_string("Controlador Servomotor v0.1\t\n");
         break;default:
         break;
     }
     switch (cmd->code){
         case SyntaxError:
-            UART_write_string("Error de Syntaxis\n");
+            UART_write_string("Error de Syntaxis\r\n");
         break;case FaltanParametros:
             UART_write_string("Se necesitan mas parámetros\n");
         break; case SobranParametros:
@@ -112,7 +117,9 @@ static void procesar_cmd(CMD * cmd){
         break; default:
         break;
     }
-
+#else
+    (void) cmd;
+#endif
 }
 bool getCommand(CMD * cmd, char c){
     static Estado estado = INICIO;
@@ -120,14 +127,15 @@ bool getCommand(CMD * cmd, char c){
     static Numero numero;
     static uint8_t parametroRecibido = 0 ;
     bool encontrado = 0;
+    //UART_write('\n');
     if (esTerminador(c)){
         ///Comprueba si detectó un parametro valido///
         encontrado = 1;
         if(DESCO != getCMD(&palabra)){
+            cmd->code = (cmd_c_parametro(&palabra) > parametroRecibido) ? FaltanParametros : SobranParametros; 
             if((cmd_c_parametro(&palabra) == parametroRecibido)) {
                 cmd->code = OK;
             }
-            cmd->code = (cmd_c_parametro(&palabra) > parametroRecibido) ? FaltanParametros : SobranParametros;            
         }else{
             cmd->code = SyntaxError;
         }
