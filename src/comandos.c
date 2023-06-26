@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include "buffer.h"
 #include "numeros.h"
+#include "UART.h"
 
 static char const * const tabla_cmd[N_COMANDOS] = {
     "ang\n1",
@@ -79,16 +80,20 @@ static bool esTerminador(char c){
     return (c == '\r' || c == '\n');
 }
 
-static void procesar_cmd(CMD * cmd){
-    
- /*       switch (cmd->cmd)
+static void procesar_cmd(CMD * cmd){  
+    switch (cmd->cmd)
     {        case ANG:
-            UART_write_string("Angulo fijado en: ");
-            UART_write_numero(cmd->parametro);
-            UART_write('\n');           
+            (cmd->parametro <= 180 && cmd_c_parametro > 0 ) ? 
+                {
+                    set_servo_angle(cmd->parametro[0]);
+                    UART_write_string("Angulo fijado en: ");
+                    UART_write_numero(cmd->parametro);
+                    UART_write('\n'); 
+                }
+            :   UART_write_string("Angulo Invalido, ingrege un valor entre 0-180\n");                      
         break;case ANGq:
             UART_write_string("Angulo fijado en: ");
-            //UART_write_numero(getAngle(servo)); 
+            UART_write_numero(get_servo_angle()); 
             UART_write('\n');           
         break;case IDq:
             UART_write_string("Controlador Servomotor v0.1\n");
@@ -96,7 +101,18 @@ static void procesar_cmd(CMD * cmd){
             UART_write_string("Syntax ERROR!\n");
         break;default:
         break;
-    }*/
+    }
+    switch (cmd->code){
+        case SyntaxError:
+            UART_write_string("Error de Syntaxis\n");
+        break;case FaltanParametros:
+            UART_write_string("Se necesitan mas parámetros\n");
+        break; case SobranParametros:
+            UART_write_string("Demasiados Parametros para el comando\n");
+        break; default:
+        break;
+    }
+
 }
 bool getCommand(CMD * cmd, char c){
     static Estado estado = INICIO;

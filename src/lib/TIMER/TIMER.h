@@ -11,5 +11,6 @@ void    TIM3_init(void);
  * @brief Establece el ángulo del servo motor.
  * @param angle El ángulo deseado para el servo motor (0-180).
  */
-void set_servo_angle(uint32_t angle); //uint8??
+void set_servo_angle(uint32_t angle); //Comprobar que valor este entre 180!
+int get_servo_angle(void);
 #endif
