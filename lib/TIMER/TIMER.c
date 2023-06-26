@@ -3,8 +3,8 @@
 #include <string.h>
 
 #define PERIODO_PWM 20000  // Período del PWM en microsegundos
-#define ANCHO_PULSO_MIN 1000  // Ancho de pulso mínimo en microsegundos
-#define ANCHO_PULSO_MAX 2000  // Ancho de pulso máximo en microsegundos
+#define ANCHO_PULSO_MIN 500  // Ancho de pulso mínimo en microsegundos
+#define ANCHO_PULSO_MAX 2500  // Ancho de pulso máximo en microsegundos
 
 #define MAX_LONG_COMANDO 10
 
@@ -73,7 +73,7 @@ void TIM3_IRQHandler(void) {            // Limpiar la bandera de interrupción??
 */
 
 int get_servo_angle(void){
-  return TIM3->CCR1 * 180;
+  return ((TIM3->CCR1 - 500) * 180)/2000;
 }
 /*
 int main(void) {

@@ -11,6 +11,8 @@
 
 static char const * const tabla_cmd[N_COMANDOS] = {
     "ang\n1",
+    "angulo\n1",
+    "angulo?",
     "ang?",
     "apagar",
     "id?",
@@ -88,6 +90,7 @@ static void procesar_cmd(CMD * cmd){
 #ifndef PIO_UNIT_TESTING
     switch (cmd->cmd)
     {        case ANG:
+             case ANGULO: //FALLTHRU
             if(cmd->parametro[0] <=180  ){ //&& (cmd->code = OK)
                     set_servo_angle(cmd->parametro[0]);
                     UART_write_string("Angulo fijado en: ");
@@ -98,6 +101,7 @@ static void procesar_cmd(CMD * cmd){
                 UART_write_string("Angulo Invalido, ingrege un valor entre 0-180\t\n"); 
                 }                     
         break;case ANGq:
+            case ANGULOq: //FALLTHRU
             UART_write_string("Angulo fijado en: ");
             UART_write_numero(get_servo_angle()); 
             UART_write('\r');           

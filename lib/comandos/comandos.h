@@ -1,13 +1,15 @@
 
 #ifndef COMANDOS_H
 #define COMANDOS_H
-#define N_COMANDOS 5
+#define N_COMANDOS 7
 #define MAX_N_PARAMETROS 1
 #include <stdbool.h>
 
 
 typedef enum Command{
     ANG,
+    ANGULO,
+    ANGULOq,
     ANGq, //ANG?
     APAGAR, 
     IDq, //ID?
