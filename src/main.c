@@ -1,15 +1,13 @@
 #include <UART.h>
 #include <TIMER.h>
 #include "BluePillHal.h"
+#include <stm32f1xx.h>
+
 
 int main (void){
     UART_init();
     TIM3_init();
-    BP_Pin_mode(C13,OUT_2MHz);
-
-    
-    for(;;);
-
-    return 0;
+    __WFI();
+    return;
 }
 
