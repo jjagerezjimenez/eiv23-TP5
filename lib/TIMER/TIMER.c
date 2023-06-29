@@ -19,7 +19,6 @@ void TIM3_init(void) {
     TIM3->CR2 = 0;  // Limpiar el registro de control 2
     TIM3->CCMR1 = TIM_CCMR1_OC1M_1 | TIM_CCMR1_OC1M_2;  // Modo PWM1 en canal 1
     TIM3->CCER = TIM_CCER_CC1E;  // Habilitar la salida del canal 1
-
     TIM3->PSC = (SystemCoreClock / 1000000) - 1;  // Configurar el preescaler para una frecuencia de 1MHz
     TIM3->ARR = PERIODO_PWM - 1;  // Configurar el período del PWM
 
@@ -32,8 +31,9 @@ void TIM3_init(void) {
 
     // Iniciar el Timer
     TIM3->CR1 |= TIM_CR1_CEN;
+    TIM3 -> CCR1 = 500;
 
-*/
+
 }
 
 void set_servo_angle(uint32_t angle) {

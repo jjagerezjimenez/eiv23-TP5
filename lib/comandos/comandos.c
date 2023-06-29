@@ -92,13 +92,13 @@ static void procesar_cmd(CMD * cmd){
     switch (cmd->cmd)
     {        case ANG:
              case ANGULO: //FALLTHRU
-            if(cmd->parametro[0] <=180  ){ //&& (cmd->code = OK)
+            if(cmd->parametro[0] <=180 && cmd->code == OK ){ //&& (cmd->code = OK)
                     set_servo_angle(cmd->parametro[0]);
                     UART_write_string("Angulo fijado en: ");
                     UART_write_numero(cmd->parametro[0]);
                     UART_write('\n'); 
                     UART_write('\r'); 
-                }else{
+                }else if(cmd->code == OK){
                 UART_write_string("Angulo Invalido, ingrege un valor entre 0-180\n\r"); 
                 }                     
         break;case ANGq:
