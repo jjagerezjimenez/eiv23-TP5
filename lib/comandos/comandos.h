@@ -31,7 +31,14 @@ typedef struct CMD{
     Codigo code;
 }CMD;
 
-
+/**
+ * @brief Envia un caracter para ser procesado
+ * 
+ * @param cmd 
+ * @param c 
+ * @return true 
+ * @return false 
+ */
 bool getCommand(CMD * cmd, char c);
 
 

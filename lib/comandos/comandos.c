@@ -83,7 +83,8 @@ static uint8_t cmd_c_parametro(Palabra * palabra){
     return cantidadParametros;
 }
 static bool esTerminador(char c){
-    return (c == '\n' ); //|| c == '\n'
+    return (c == '\n' ); //|| c == '\r' (El primero que se envía es '\n' por lo que no se consulta el otro)
+        //no molesta despues??
 }
 
 static void procesar_cmd(CMD * cmd){  
@@ -95,19 +96,19 @@ static void procesar_cmd(CMD * cmd){
                     set_servo_angle(cmd->parametro[0]);
                     UART_write_string("Angulo fijado en: ");
                     UART_write_numero(cmd->parametro[0]);
-                    UART_write('\r'); 
                     UART_write('\n'); 
+                    UART_write('\r'); 
                 }else{
-                UART_write_string("Angulo Invalido, ingrege un valor entre 0-180\t\n"); 
+                UART_write_string("Angulo Invalido, ingrege un valor entre 0-180\n\r"); 
                 }                     
         break;case ANGq:
             case ANGULOq: //FALLTHRU
             UART_write_string("Angulo fijado en: ");
             UART_write_numero(get_servo_angle()); 
-            UART_write('\r');           
             UART_write('\n');           
+            UART_write('\r');           
         break;case IDq:
-            UART_write_string("Controlador Servomotor v0.1\t\n");
+            UART_write_string("Controlador Servomotor v0.1\n\r");
         break;default:
         break;
     }
@@ -115,9 +116,9 @@ static void procesar_cmd(CMD * cmd){
         case SyntaxError:
             UART_write_string("Error de Syntaxis\r\n");
         break;case FaltanParametros:
-            UART_write_string("Se necesitan mas parámetros\n");
+            UART_write_string("Se necesitan mas parámetros\n\r");
         break; case SobranParametros:
-            UART_write_string("Demasiados Parametros para el comando\n");
+            UART_write_string("Demasiados Parametros para el comando\n\r");
         break; default:
         break;
     }
