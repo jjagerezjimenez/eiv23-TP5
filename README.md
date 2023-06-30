@@ -41,6 +41,16 @@ ANG 40
 SERVO2/ANG?
 
 
+Los pines utilizados son
+A6  -> Pin de salida
+A9  -> Receptor Rx
+A10 -> Emisor Tx
+Servo a pin alimentacion 5V
+Utilizamos un preescaler de 1MHz
+Resolucion de 1°
+Para el Timer utilizamos TIM3
+
+
 
 
 
