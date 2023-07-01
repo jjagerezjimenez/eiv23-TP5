@@ -7,7 +7,7 @@
 int main (void){
     UART_init();
     TIM3_init();
-    __WFI();
+    for (;;) {__WFI();}
     return;
 }
 
